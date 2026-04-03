@@ -1,7 +1,13 @@
 {
   "nav": {
     "login": "로그인",
-    "logout": "로그아웃"
+    "logout": "로그아웃",
+    "tutors": "선생님 찾기"
+  },
+  "home": {
+    "welcome": "안녕하세요",
+    "searchTutors": "선생님 찾기",
+    "registerTutor": "선생님 등록하기"
   },
   "login": {
     "title": "로그인",

@@ -1,14 +1,15 @@
 import "server-only";
 
-const dictionaries = {
-  ja: () => import("./dictionaries/ja.json").then((m) => m.default),
-  ko: () => import("./dictionaries/ko.json").then((m) => m.default),
-};
+import ja from "./dictionaries/ja.json";
+import ko from "./dictionaries/ko.json";
+
+export type Dictionary = typeof ja;
+
+const dictionaries = { ja, ko } satisfies Record<string, Dictionary>;
 
 export type Locale = keyof typeof dictionaries;
-export type Dictionary = Awaited<ReturnType<(typeof dictionaries)[Locale]>>;
 
 export const hasLocale = (locale: string): locale is Locale =>
   locale in dictionaries;
 
-export const getDictionary = async (locale: Locale) => dictionaries[locale]();
+export const getDictionary = (locale: Locale) => dictionaries[locale];

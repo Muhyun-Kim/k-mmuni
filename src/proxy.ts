@@ -24,7 +24,8 @@ export async function proxy(request: NextRequest) {
     /\.(?:svg|png|jpg|jpeg|gif|webp)$/.test(pathname);
 
   if (isIgnored) {
-    return handleSupabaseAuth(request);
+    const { response } = await handleSupabaseAuth(request);
+    return response;
   }
 
   // Check if pathname already has a locale
@@ -52,10 +53,16 @@ export async function proxy(request: NextRequest) {
   }
 
   // Public pages that don't require login
-  const publicPaths = ["/", "/login"];
-  const isPublic = publicPaths.some(
+  const publicPaths = ["/", "/login", "/tutors"];
+  const privatePaths = ["/tutors/register"];
+  const isPrivate = privatePaths.some(
     (p) => pathWithoutLocale === p || pathWithoutLocale.startsWith(p + "/"),
   );
+  const isPublic =
+    !isPrivate &&
+    publicPaths.some(
+      (p) => pathWithoutLocale === p || pathWithoutLocale.startsWith(p + "/"),
+    );
 
   // Redirect unauthenticated users to login
   if (!user && !isPublic) {

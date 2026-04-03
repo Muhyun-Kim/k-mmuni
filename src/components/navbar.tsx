@@ -6,6 +6,7 @@ import type { Locale } from "@/i18n/config";
 
 type NavDict = {
   login: string;
+  tutors: string;
   logout: string;
 };
 
@@ -17,10 +18,15 @@ export async function Navbar({ lang, dict }: { lang: Locale; dict: NavDict }) {
 
   return (
     <header className="border-b mb-8">
-      <nav className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
-        <Link href={`/${lang}`} className="text-lg font-bold">
-          K-mmuni
-        </Link>
+      <nav className="mx-auto flex h-14 max-w-5xl justify-between px-4">
+        <div className="flex items-center gap-4">
+          <Link href={`/${lang}`} className="text-lg font-bold">
+            K-mmuni
+          </Link>
+          <Link href={`/${lang}/tutors`} className="text-sm">
+            {dict.tutors}
+          </Link>
+        </div>
         <div className="flex items-center gap-4">
           <LocaleSwitcher lang={lang} />
           {user ? (

@@ -1,7 +1,13 @@
 {
   "nav": {
     "login": "ログイン",
-    "logout": "ログアウト"
+    "logout": "ログアウト",
+    "tutors": "先生を探す"
+  },
+  "home": {
+    "welcome": "ようこそ",
+    "searchTutors": "先生を探す",
+    "registerTutor": "先生を登録する"
   },
   "login": {
     "title": "ログイン",
