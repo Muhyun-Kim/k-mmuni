@@ -29,7 +29,7 @@ export async function proxy(request: NextRequest) {
 
   // Check if pathname already has a locale
   const pathnameHasLocale = locales.some(
-    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
   );
 
   if (!pathnameHasLocale) {
@@ -38,7 +38,33 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(request.nextUrl);
   }
 
-  return handleSupabaseAuth(request);
+  // Handle Supabase auth and get user
+  const { response, user } = await handleSupabaseAuth(request);
+
+  // locale을 제외한 경로 (e.g. /ja/login → /login, /ja → /)
+  const pathWithoutLocale = pathname.replace(/^\/[a-z]{2}/, "") || "/";
+
+  // Redirect logged-in users away from login page
+  if (user && pathWithoutLocale === "/login") {
+    const locale = pathname.split("/")[1];
+    request.nextUrl.pathname = `/${locale}`;
+    return NextResponse.redirect(request.nextUrl);
+  }
+
+  // Public pages that don't require login
+  const publicPaths = ["/", "/login"];
+  const isPublic = publicPaths.some(
+    (p) => pathWithoutLocale === p || pathWithoutLocale.startsWith(p + "/"),
+  );
+
+  // Redirect unauthenticated users to login
+  if (!user && !isPublic) {
+    const locale = pathname.split("/")[1];
+    request.nextUrl.pathname = `/${locale}/login`;
+    return NextResponse.redirect(request.nextUrl);
+  }
+
+  return response;
 }
 
 async function handleSupabaseAuth(request: NextRequest) {
@@ -62,12 +88,12 @@ async function handleSupabaseAuth(request: NextRequest) {
           }
         },
       },
-    }
+    },
   );
 
-  await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
 
-  return supabaseResponse;
+  return { response: supabaseResponse, user };
 }
 
 export const config = {

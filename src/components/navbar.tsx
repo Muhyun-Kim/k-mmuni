@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "@/app/[lang]/login/actions";
+import { LocaleSwitcher } from "@/components/locale-switcher";
 import type { Locale } from "@/i18n/config";
 
 type NavDict = {
@@ -21,12 +22,7 @@ export async function Navbar({ lang, dict }: { lang: Locale; dict: NavDict }) {
           K-mmuni
         </Link>
         <div className="flex items-center gap-4">
-          <Link
-            href={lang === "ja" ? "/ko" : "/ja"}
-            className="text-xs border rounded px-2 py-1 hover:bg-gray-100"
-          >
-            {lang === "ja" ? "한국어" : "日本語"}
-          </Link>
+          <LocaleSwitcher lang={lang} />
           {user ? (
             <form action={signOut}>
               <input type="hidden" name="lang" value={lang} />
