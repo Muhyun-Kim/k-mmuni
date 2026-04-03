@@ -1,0 +1,14 @@
+{
+  "nav": {
+    "login": "ログイン",
+    "logout": "ログアウト"
+  },
+  "login": {
+    "title": "ログイン",
+    "google": "Googleでログイン",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "submit": "ログイン",
+    "signup": "新規登録"
+  }
+}

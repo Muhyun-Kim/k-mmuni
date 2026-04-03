@@ -1,0 +1,14 @@
+{
+  "nav": {
+    "login": "로그인",
+    "logout": "로그아웃"
+  },
+  "login": {
+    "title": "로그인",
+    "google": "Google로 로그인",
+    "email": "이메일",
+    "password": "비밀번호",
+    "submit": "로그인",
+    "signup": "회원가입"
+  }
+}

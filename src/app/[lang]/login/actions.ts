@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 export async function signInWithEmail(formData: FormData) {
+  const lang = formData.get("lang") as string;
   const supabase = await createClient();
 
   const { error } = await supabase.auth.signInWithPassword({
@@ -12,14 +13,14 @@ export async function signInWithEmail(formData: FormData) {
   });
 
   if (error) {
-    redirect("/login?error=invalid");
+    redirect(`/${lang}/login?error=invalid`);
   }
 
-  redirect("/");
+  redirect(`/${lang}`);
 }
 
-
 export async function signUpWithEmail(formData: FormData) {
+  const lang = formData.get("lang") as string;
   const supabase = await createClient();
 
   const { error } = await supabase.auth.signUp({
@@ -28,14 +29,15 @@ export async function signUpWithEmail(formData: FormData) {
   });
 
   if (error) {
-    redirect("/login?error=signup");
+    redirect(`/${lang}/login?error=signup`);
   }
 
-  redirect("/");
+  redirect(`/${lang}`);
 }
 
-export async function signOut() {
+export async function signOut(formData: FormData) {
+  const lang = formData.get("lang") as string;
   const supabase = await createClient();
   await supabase.auth.signOut();
-  redirect("/login");
+  redirect(`/${lang}/login`);
 }
